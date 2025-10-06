@@ -7,3 +7,5 @@
 7. docker compose
 8. Loguearme con aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 086143043522.dkr.ecr.us-east-2.amazonaws.com
 9. docker compose up -d
+10. opcion1 Gitlab -> Se puede guardar sin costo adicional
+10. opcion2 
