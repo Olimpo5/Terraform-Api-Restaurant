@@ -85,11 +85,11 @@ resource "aws_instance" "restaurant_app_server" {
 
 resource "time_sleep" "wait_120_seconds" {
   create_duration = "120s"
-  depends_on = [ aws_instance.restaurant_app_server ]
+  depends_on      = [aws_instance.restaurant_app_server]
 }
 
 resource "null_resource" "setup_app" {
-  depends_on = [ time_sleep.wait_120_seconds ]
+  depends_on = [time_sleep.wait_120_seconds]
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -97,7 +97,7 @@ resource "null_resource" "setup_app" {
       private_key = file("./keys/restaurant_app_key")
       host        = aws_instance.restaurant_app_server.public_ip
     }
-    inline = [ 
+    inline = [
       "cd /containers",
       "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 086143043522.dkr.ecr.us-east-2.amazonaws.com",
       "docker compose up -d"
