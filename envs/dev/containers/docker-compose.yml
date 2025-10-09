@@ -8,3 +8,11 @@ services:
       - SERVICE=${SERVICE}
       - USER_EMAIL=${USER_EMAIL}
       - USER_PASSWORD=${USER_PASSWORD}
+  
+  mysql:
+    image: mysql
+    container_name: "MySQL"
+    ports:
+      - 3306:3306
+    environment:
+      - MySQL_ROOT_PASSWORD=Kevdev..10

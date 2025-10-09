@@ -23,6 +23,13 @@ resource "aws_security_group" "restaurant_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    description = "NodeApp"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -102,5 +109,18 @@ resource "null_resource" "setup_app" {
       "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 086143043522.dkr.ecr.us-east-2.amazonaws.com",
       "docker compose up -d"
     ]
+  }
+}
+
+resource "null_resource" "mysql_change" {
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("./keys/restaurant_app_key")
+      host        = aws_instance.restaurant_app_server.public_ip
+    }
+    source      = "./containers/docker-compose.yml"
+    destination = "/containers/docker-compose.yml"
   }
 }
