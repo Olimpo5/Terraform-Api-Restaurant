@@ -124,3 +124,19 @@ resource "null_resource" "mysql_change" {
     destination = "/containers/docker-compose.yml"
   }
 }
+
+resource "null_resource" "mysql_up" {
+  depends_on = [null_resource.mysql_change]
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("./keys/restaurant_app_key")
+      host        = aws_instance.restaurant_app_server.public_ip
+    }
+    inline = [
+      "cd /containers",
+      "docker compose up -d"
+    ]
+  }
+}
