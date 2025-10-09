@@ -1,16 +1,17 @@
 
-
 module "vm-linux-server" {
   source            = "../../modules/vm"
-  aws_access_key    = var.aws_access_key
-  aws_secret_key    = var.aws_secret_key
-  aws_environment   = var.aws_environment
-  aws_key_pair_name = var.aws_key_pair_name
-  aws_region        = var.aws_region
-  aws_restaurant_sg = var.aws_restaurant_sg
-  aws_instance_type = var.aws_instance_type
-  aws_server_name   = var.aws_server_name
-  node_app_service  = var.node_app_service
+  aws_access_key    = var.AWS_ACCESS_KEY
+  aws_secret_key    = var.AWS_SECRET_KEY
+  aws_environment   = var.AWS_ENVIRONMENT
+  aws_key_pair_name = var.AWS_KEY_PAIR_NAME
+  aws_region        = var.AWS_REGION
+  aws_restaurant_sg = var.AWS_RESTAURANT_SG
+  aws_instance_type = var.AWS_INSTANCE_TYPE
+  aws_server_name   = var.AWS_SERVER_NAME
+  node_app_service  = var.NODE_APP_SERVICE
+  node_app_email    = var.NODE_APP_EMAIL
+  node_app_password = var.NODE_APP_PASSWORD
 }
 
 output "vm-linux-server-ip" {
