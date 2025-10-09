@@ -113,6 +113,7 @@ resource "null_resource" "setup_app" {
 }
 
 resource "null_resource" "mysql_change" {
+  depends_on = [null_resource.setup_app]
   provisioner "file" {
     connection {
       type        = "ssh"
