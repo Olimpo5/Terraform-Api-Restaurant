@@ -22,6 +22,7 @@ env:
   TF_VAR_AWS_ENVIRONMENT: ${{ secrets.TF_VAR_ENVIRONMENT }}
   TF_VAR_AWS_SERVER_NAME: ${{ secrets.TF_VAR_SERVER_NAME }}
   TF_VAR_AWS_RESTAURANT_SG: ${{ secrets.TF_VAR_AWS_RESTAURANT_SG }}
+  TF_VAR_MAIN_DOMAIN: ${{ secrets.TF_VAR_MAIN_DOMAIN }}
 
 jobs:
   terraform-plan:

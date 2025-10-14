@@ -40,3 +40,6 @@ variable "node_app_service" {
 variable "node_app_password" {
   type = string
 }
+variable "main_domain" {
+  type = string
+}

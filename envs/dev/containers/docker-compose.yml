@@ -1,10 +1,40 @@
 services:
+  reverse-proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    container_name: Reverse-Proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+        - VIRTUAL_HOST=${MAIN_DOMAIN}
+        - VIRTUAL_PATH=/.well-known
+    volumes:
+      - /volumes/nginx/certs:/etc/nginx/certs:ro
+      - /volumes/nginx/vhostd:/etc/nginx/vhost.d
+      - /volumes/nginx/html:/usr/share/nginx/html:rw
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  lets-encrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: 'LetsEncrypt'
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=Reverse-Proxy
+    volumes:
+      - /volumes/nginx/certs:/etc/nginx/certs
+      - /volumes/nginx/vhostd:/etc/nginx/vhost.d
+      - /volumes/nginx/html:/usr/share/nginx/html:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   node-app:
     image: 086143043522.dkr.ecr.us-east-2.amazonaws.com/712nodeapp:latest
     container_name: "node-app"
-    ports:
-      - 3000:3000
+    expose:
+      - 3000
     environment:
+      - VIRTUAL_HOST=${MAIN_DOMAIN}
+      - VIRTUAL_PATH=/
+      - LETSENCRYPT_HOST=${MAIN_DOMAIN}
+      - LETSENCRYPT_EMAIL=${USER_EMAIL}
       - SERVICE=${SERVICE}
       - USER_EMAIL=${USER_EMAIL}
       - USER_PASSWORD=${USER_PASSWORD}

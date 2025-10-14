@@ -12,6 +12,7 @@ module "vm-linux-server" {
   node_app_service  = var.NODE_APP_SERVICE
   node_app_email    = var.NODE_APP_EMAIL
   node_app_password = var.NODE_APP_PASSWORD
+  main_domain       = var.MAIN_DOMAIN
 }
 
 output "vm-linux-server-ip" {

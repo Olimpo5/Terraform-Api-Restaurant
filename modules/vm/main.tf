@@ -11,6 +11,20 @@ resource "aws_security_group" "restaurant_sg" {
 
   ingress {
     description = "SSH"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "SSH"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -62,11 +76,18 @@ resource "aws_instance" "restaurant_app_server" {
     }
     inline = [
       "sudo mkdir /containers",
+      "sudo mkdir -p /volumes/nginx/certs",
+      "sudo mkdir -p /volumes/nginx/vhostd",
+      "sudo mkdir -p /volumes/nginx/html",
+      "sudo chmod 777 /volumes/nginx/certs",
+      "sudo chmod 777 /volumes/nginx/vhostd",
+      "sudo chmod 777 /volumes/nginx/html",
       "mkdir /home/ubuntu/.aws",
       "sudo touch /containers/.env",
       "sudo chmod 777 /containers",
       "sudo chmod 777 /containers/.env",
       "sudo echo \"SERVICE=${var.node_app_service}\" >> /containers/.env ",
+      "sudo echo \"MAIN_DOMAIN=${var.main_domain}\" >> /containers/.env ",
       "sudo echo \"USER_EMAIL=${var.node_app_email}\" >> /containers/.env ",
       "sudo echo \"USER_PASSWORD=${var.node_app_password}\" >> /containers/.env ",
       "sudo echo \"[default]\naws_access_key_id=${var.aws_access_key}\naws_secret_access_key=${var.aws_secret_key}\" | sudo tee /home/ubuntu/.aws/credentials >/dev/null",
